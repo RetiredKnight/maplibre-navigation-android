@@ -52,6 +52,7 @@ import static com.mapbox.mapboxsdk.style.layers.PropertyFactory.visibility;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_BEARING;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_CASING_LAYER_ID;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_CASING_OFFSET;
+import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_CUSTOM_ID;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_ICON;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_ICON_CASING;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_LAYER_ID;
@@ -59,6 +60,7 @@ import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HEAD_SOURCE_ID;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_HIDDEN_ZOOM_LEVEL;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_SHAFT_CASING_LINE_LAYER_ID;
+import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_SHAFT_CUSTOM_ID;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_SHAFT_LINE_LAYER_ID;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.ARROW_SHAFT_SOURCE_ID;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.LAYER_ABOVE_UPCOMING_MANEUVER_ARROW;
@@ -191,7 +193,7 @@ class MapRouteArrow {
 
   private void initializeArrowShaft() {
     arrowShaftGeoJsonSource = new GeoJsonSource(
-      ARROW_SHAFT_SOURCE_ID,
+            ARROW_SHAFT_CUSTOM_ID,
       FeatureCollection.fromFeatures(new Feature[]{}),
       new GeoJsonOptions().withMaxZoom(16)
     );
@@ -200,7 +202,7 @@ class MapRouteArrow {
 
   private void initializeArrowHead() {
     arrowHeadGeoJsonSource = new GeoJsonSource(
-      ARROW_HEAD_SOURCE_ID,
+            ARROW_HEAD_CUSTOM_ID,
       FeatureCollection.fromFeatures(new Feature[]{}),
       new GeoJsonOptions().withMaxZoom(16)
     );
