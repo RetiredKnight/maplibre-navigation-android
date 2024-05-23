@@ -1,9 +1,9 @@
 package com.mapbox.services.android.navigation.ui.v5
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.AttributeSet
 import android.widget.Button
 import android.widget.ImageButton
@@ -40,7 +40,6 @@ import com.mapbox.services.android.navigation.ui.v5.route.NavigationRoute
 import com.mapbox.services.android.navigation.ui.v5.summary.SummaryBottomSheet
 import com.mapbox.services.android.navigation.v5.models.DirectionsRoute
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation
-import com.mapbox.services.android.navigation.v5.navigation.NavigationConstants
 import com.mapbox.services.android.navigation.v5.navigation.NavigationMapRoute
 import com.mapbox.services.android.navigation.v5.navigation.NavigationTimeFormat
 import com.mapbox.services.android.navigation.v5.utils.DistanceFormatter
@@ -110,6 +109,8 @@ class NavigationRouteView @JvmOverloads constructor(
     private var locationComponent: LocationComponent? = null
     private var route: DirectionsRoute? = null
     private var navigationMapRoute: NavigationMapRoute? = null
+    private var baseCameraPosition: CameraPosition? = null
+    private var isMapReinitialized: Boolean = false
 
     init {
         ThemeSwitcher.setTheme(context, attrs)
@@ -218,8 +219,9 @@ class NavigationRouteView @JvmOverloads constructor(
      * be in [Fragment.onDestroyView].
      */
     fun onDestroy() {
-        shutdown()
-        lifecycleRegistry!!.markState(Lifecycle.State.DESTROYED)
+//        shutdown()
+        stopNavigation()
+//        lifecycleRegistry!!.markState(Lifecycle.State.DESTROYED)
     }
 
     fun onStart() {
@@ -261,9 +263,21 @@ class NavigationRouteView @JvmOverloads constructor(
             context.getString(R.string.map_style_light)
         )
         this.mapboxMap = mapboxMap
-        mapboxMap.setStyle((builder)) {
-            isMapInitialized = true
-            enableLocationComponent(it)
+        if (!isMapInitialized) {
+            mapboxMap.setStyle((builder)) {
+                isMapInitialized = true
+                enableLocationComponent(it)
+                baseCameraPosition?.let {
+                    mapboxMap.cameraPosition = it
+                }
+            }
+        } else {
+            mapboxMap.getStyle {
+                enableLocationComponent(it)
+                baseCameraPosition?.let {
+                    mapboxMap.cameraPosition = it
+                }
+            }
         }
         navigationMapRoute = NavigationMapRoute(
             mapView!!,
@@ -310,9 +324,6 @@ class NavigationRouteView @JvmOverloads constructor(
             this.profile("car")
             this.baseUrl(context.getString(R.string.base_url))
         }
-
-
-
         navigationRouteBuilder.addWaypoint(
             Point.fromLngLat(76.930137, 43.230361)
         )
@@ -324,8 +335,6 @@ class NavigationRouteView @JvmOverloads constructor(
         navigationRouteBuilder.addWaypoint(
             Point.fromLngLat(76.920187, 43.236783)
         )
-
-
         navigationRouteBuilder.build().getRoute(object : Callback<DirectionsResponse> {
             override fun onResponse(
                 call: Call<DirectionsResponse>,
@@ -355,6 +364,7 @@ class NavigationRouteView @JvmOverloads constructor(
                             .lightThemeResId(R.style.TestNavigationViewLight)
                             .darkThemeResId(R.style.TestNavigationViewDark)
                             .build()
+                        baseCameraPosition = mapboxMap!!.cameraPosition
                         NavigationLauncher.startNavigation(context, options)
                         route?.let {
                             if (options.initialMapCameraPosition() != null) {
@@ -861,13 +871,56 @@ class NavigationRouteView @JvmOverloads constructor(
         isSubscribed = true
     }
 
+    @SuppressLint("MissingPermission")
     private fun shutdown() {
         if (navigationMap != null) {
             navigationMap!!.removeOnCameraTrackingChangedListener(onTrackingChangedListener)
+            navigationMap!!.removeRoute()
+        }
+//        navigationViewModel?.let {
+//            it.isOffRoute.removeObservers(this)
+//            it.instructionModel.removeObservers(this)
+//            it.bannerInstructionModel.removeObservers(this)
+//            it.summaryModel.removeObservers(this)
+//            it.retrieveNavigationLocation().removeObservers(this)
+//            it.retrieveRoute().removeObservers(this)
+//            it.retrieveShouldRecordScreenshot().removeObservers(this)
+//            it.retrieveDestination().removeObservers(this)
+//        }
+        isMapInitialized = false
+        NavigationViewSubscriber(this, navigationViewModel, navigationPresenter).unsubscribe()
+        navigationViewModel!!.stopNavigation()
+        mapboxMap!!.markers.forEach {
+            mapboxMap!!.removeMarker(it)
         }
         navigationViewEventDispatcher!!.onDestroy(navigationViewModel!!.retrieveNavigation())
-        mapView!!.onDestroy()
-        navigationViewModel!!.onDestroy(isChangingConfigurations)
+        mapboxMap!!.getStyle {
+            mapboxMap!!.locationComponent.isLocationComponentEnabled = false
+        }
+//        mapView!!.onDestroy()
+//        mapView!!.getMapAsync(this)
+
+        baseCameraPosition?.let {
+            mapboxMap!!.cameraPosition = it
+        }
+
+        navigationViewModel!!.onDestroy(false)
+        ImageCreator.getInstance().shutdown()
+        navigationMap = null
+
+        navigationMapRoute?.removeRoute()
+
+        isSubscribed = false
+    }
+
+    private fun shutDown2() {
+        if (navigationMap != null) {
+            navigationMap!!.removeOnCameraTrackingChangedListener(onTrackingChangedListener)
+        }
+        NavigationViewSubscriber(this, navigationViewModel, navigationPresenter).unsubscribe()
+        navigationViewEventDispatcher!!.onDestroy(navigationViewModel!!.retrieveNavigation())
+//        mapView!!.onDestroy()
+        navigationViewModel!!.onDestroy(false)
         ImageCreator.getInstance().shutdown()
         navigationMap = null
     }

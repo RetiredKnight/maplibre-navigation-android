@@ -282,6 +282,7 @@ class NavigationUIActivity :
 
     private fun finishNavigation() {
         NavigationLauncher.cleanUpPreferences(this)
+        binding.navigationView.onDestroy()
 //        finish()
     }
 }

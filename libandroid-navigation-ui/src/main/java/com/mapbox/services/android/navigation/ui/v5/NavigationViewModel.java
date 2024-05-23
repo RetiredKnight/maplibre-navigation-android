@@ -120,6 +120,7 @@ public class NavigationViewModel extends AndroidViewModel {
             endNavigation();
             deactivateInstructionPlayer();
             isRunning = false;
+            this.route.setValue(null);
         }
         clearDynamicCameraMap();
         navigationViewEventDispatcher = null;

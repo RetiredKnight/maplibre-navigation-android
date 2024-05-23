@@ -80,6 +80,8 @@ import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.TRANSPARENT;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.TWO_POINTS;
 
+import timber.log.Timber;
+
 class MapRouteArrow {
 
   @ColorInt
@@ -197,7 +199,11 @@ class MapRouteArrow {
       FeatureCollection.fromFeatures(new Feature[]{}),
       new GeoJsonOptions().withMaxZoom(16)
     );
-    mapboxMap.getStyle().addSource(arrowShaftGeoJsonSource);
+    try {
+      mapboxMap.getStyle().addSource(arrowShaftGeoJsonSource);
+    } catch (Exception e) {
+      Timber.d("Style already exists");
+    }
   }
 
   private void initializeArrowHead() {
@@ -206,7 +212,11 @@ class MapRouteArrow {
       FeatureCollection.fromFeatures(new Feature[]{}),
       new GeoJsonOptions().withMaxZoom(16)
     );
-    mapboxMap.getStyle().addSource(arrowHeadGeoJsonSource);
+    try {
+      mapboxMap.getStyle().addSource(arrowHeadGeoJsonSource);
+    } catch (Exception e) {
+      Timber.d("Style already exists");
+    }
   }
 
   private void addArrowHeadIcon() {
