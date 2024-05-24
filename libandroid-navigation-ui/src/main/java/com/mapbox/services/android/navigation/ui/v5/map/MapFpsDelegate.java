@@ -2,7 +2,6 @@ package com.mapbox.services.android.navigation.ui.v5.map;
 
 import android.content.Context;
 
-import com.mapbox.mapboxsdk.maps.MapView;
 import com.mapbox.services.android.navigation.ui.v5.camera.NavigationCamera;
 import com.mapbox.services.android.navigation.ui.v5.camera.OnTrackingModeChangedListener;
 import com.mapbox.services.android.navigation.ui.v5.camera.OnTrackingModeTransitionListener;
@@ -11,6 +10,8 @@ import com.mapbox.services.android.navigation.v5.navigation.NavigationConstants;
 import com.mapbox.services.android.navigation.v5.routeprogress.ProgressChangeListener;
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteLegProgress;
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
+
+import org.maplibre.android.maps.MapView;
 
 class MapFpsDelegate implements OnTrackingModeChangedListener, OnTrackingModeTransitionListener {
 

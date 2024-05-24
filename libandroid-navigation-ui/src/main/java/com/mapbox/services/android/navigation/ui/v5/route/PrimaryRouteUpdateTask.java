@@ -2,9 +2,6 @@ package com.mapbox.services.android.navigation.ui.v5.route;
 
 import android.os.Handler;
 
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.FeatureCollection;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +9,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.FIRST_COLLECTION_INDEX;
 import static com.mapbox.services.android.navigation.ui.v5.route.RouteConstants.PRIMARY_ROUTE_PROPERTY_KEY;
+
+import org.maplibre.geojson.Feature;
+import org.maplibre.geojson.FeatureCollection;
 
 class PrimaryRouteUpdateTask extends Thread {
 

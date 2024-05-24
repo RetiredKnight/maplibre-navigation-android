@@ -56,10 +56,8 @@ dependencies {
     api dependenciesList.mapLibreServices
     api dependenciesList.mapLibreTurf
     api dependenciesList.mapLibreAnnotations
-    implementation(dependenciesList.mapLibre) {
-        exclude group: 'com.mapbox.mapboxsdk', module: 'mapbox-sdk-geojson'
-        exclude group: 'com.mapbox.mapboxsdk', module: 'mapbox-sdk-turf'
-    }
+    api dependenciesList.mapLibreGeoJson
+    implementation(dependenciesList.mapLibre)
 
     // Support libraries
     implementation dependenciesList.materialDesign

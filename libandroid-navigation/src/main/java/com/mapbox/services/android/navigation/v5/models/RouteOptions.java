@@ -7,10 +7,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.TypeAdapter;
 import com.google.gson.annotations.SerializedName;
-import com.mapbox.geojson.Point;
-import com.mapbox.geojson.PointAsCoordinatesTypeAdapter;
 import com.mapbox.services.android.navigation.v5.models.utils.FormatUtils;
 import com.mapbox.services.android.navigation.v5.models.utils.ParseUtils;
+
+import org.maplibre.geojson.Point;
+import org.maplibre.geojson.PointAsCoordinatesTypeAdapter;
 
 import java.util.List;
 

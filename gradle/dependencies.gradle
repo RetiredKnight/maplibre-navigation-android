@@ -9,10 +9,11 @@ ext {
     ]
 
     version = [
-            mapLibreVersion             : '10.0.2',
+            mapLibreVersion             : '11.0.0',
             mapLibreService             : '5.9.0',
-            mapLibreTurf                : '5.9.0',
-            mapLibreAnnotations         : '1.0.0',
+            mapLibreTurf                : '6.0.0',
+            mapLibreAnnotations         : '3.0.0',
+            maplibreGeoJson             : '6.0.0',
             annotation                  : '1.7.0',
             autoValue                   : '1.10.4',
             autoValueGson               : '1.3.1',
@@ -61,6 +62,8 @@ ext {
             mapLibreServices        : "org.maplibre.gl:android-sdk-services:${version.mapLibreService}",
             mapLibreTurf            : "org.maplibre.gl:android-sdk-turf:${version.mapLibreTurf}",
             mapLibreAnnotations     : "org.maplibre.gl:android-plugin-annotation-v9:${version.mapLibreAnnotations}",
+            mapLibreGeoJson         : 'org.maplibre.gl:android-sdk-geojson:${version.maplibreGeoJson}',
+
 
             // AutoValue
             autoValue               : "com.google.auto.value:auto-value:${version.autoValue}",

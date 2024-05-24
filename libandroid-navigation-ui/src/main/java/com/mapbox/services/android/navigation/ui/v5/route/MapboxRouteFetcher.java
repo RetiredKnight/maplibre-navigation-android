@@ -6,7 +6,6 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.mapbox.geojson.Point;
 import com.mapbox.services.android.navigation.v5.models.DirectionsResponse;
 import com.mapbox.services.android.navigation.v5.models.DirectionsRoute;
 import com.mapbox.services.android.navigation.v5.models.RouteOptions;
@@ -15,6 +14,8 @@ import com.mapbox.services.android.navigation.v5.route.RouteListener;
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
 import com.mapbox.services.android.navigation.v5.utils.RouteUtils;
 import com.mapbox.services.android.navigation.v5.utils.TextUtils;
+
+import org.maplibre.geojson.Point;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;

@@ -7,11 +7,12 @@ import android.os.Looper;
 import androidx.annotation.NonNull;
 
 import com.mapbox.services.android.navigation.v5.models.DirectionsRoute;
-import com.mapbox.mapboxsdk.location.engine.LocationEngine;
-import com.mapbox.mapboxsdk.location.engine.LocationEngineCallback;
-import com.mapbox.mapboxsdk.location.engine.LocationEngineRequest;
-import com.mapbox.mapboxsdk.location.engine.LocationEngineResult;
 import com.mapbox.services.android.navigation.v5.utils.RouteUtils;
+
+import org.maplibre.android.location.engine.LocationEngine;
+import org.maplibre.android.location.engine.LocationEngineCallback;
+import org.maplibre.android.location.engine.LocationEngineRequest;
+import org.maplibre.android.location.engine.LocationEngineResult;
 
 import timber.log.Timber;
 
@@ -24,7 +25,7 @@ class NavigationLocationEngineUpdater {
     private LocationEngine locationEngine;
 
     NavigationLocationEngineUpdater(LocationEngine locationEngine,
-            NavigationLocationEngineListener listener) {
+                                    NavigationLocationEngineListener listener) {
         this.locationEngine = locationEngine;
         this.listener = listener;
         requestLocationUpdates();

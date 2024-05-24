@@ -10,7 +10,7 @@ import com.mapbox.api.directions.v5.DirectionsCriteria;
 import com.mapbox.api.directions.v5.MapboxDirections;
 import com.mapbox.api.directions.v5.models.DirectionsResponse;
 import com.mapbox.api.directions.v5.models.RouteLeg;
-import com.mapbox.geojson.Point;
+import org.maplibre.geojson.Point;
 import com.mapbox.services.android.navigation.v5.models.DirectionsRoute;
 import com.mapbox.services.android.navigation.v5.models.RouteOptions;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;

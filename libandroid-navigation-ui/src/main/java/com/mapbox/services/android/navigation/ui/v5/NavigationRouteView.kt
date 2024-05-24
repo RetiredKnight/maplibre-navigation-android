@@ -18,17 +18,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.core.utils.TextUtils
-import com.mapbox.geojson.Point
-import com.mapbox.mapboxsdk.camera.CameraPosition
-import com.mapbox.mapboxsdk.geometry.LatLng
-import com.mapbox.mapboxsdk.location.LocationComponent
-import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
-import com.mapbox.mapboxsdk.location.modes.CameraMode
-import com.mapbox.mapboxsdk.location.modes.RenderMode
-import com.mapbox.mapboxsdk.maps.MapView
-import com.mapbox.mapboxsdk.maps.MapboxMap
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
-import com.mapbox.mapboxsdk.maps.Style
+
 import com.mapbox.services.android.navigation.ui.v5.camera.NavigationCamera
 import com.mapbox.services.android.navigation.ui.v5.instruction.ImageCreator
 import com.mapbox.services.android.navigation.ui.v5.instruction.InstructionView
@@ -45,6 +35,17 @@ import com.mapbox.services.android.navigation.v5.navigation.NavigationTimeFormat
 import com.mapbox.services.android.navigation.v5.utils.DistanceFormatter
 import com.mapbox.services.android.navigation.v5.utils.LocaleUtils
 import okhttp3.Request
+import org.maplibre.android.camera.CameraPosition
+import org.maplibre.android.geometry.LatLng
+import org.maplibre.android.location.LocationComponent
+import org.maplibre.android.location.LocationComponentActivationOptions
+import org.maplibre.android.location.modes.CameraMode
+import org.maplibre.android.location.modes.RenderMode
+import org.maplibre.android.maps.MapLibreMap
+import org.maplibre.android.maps.MapView
+import org.maplibre.android.maps.OnMapReadyCallback
+import org.maplibre.android.maps.Style
+import org.maplibre.geojson.Point
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -105,7 +106,7 @@ class NavigationRouteView @JvmOverloads constructor(
     private var isMapInitialized = false
     private var isSubscribed = false
     private var lifecycleRegistry: LifecycleRegistry? = null
-    private var mapboxMap: MapboxMap? = null
+    private var mapboxMap: MapLibreMap? = null
     private var locationComponent: LocationComponent? = null
     private var route: DirectionsRoute? = null
     private var navigationMapRoute: NavigationMapRoute? = null
@@ -258,7 +259,7 @@ class NavigationRouteView @JvmOverloads constructor(
      * @param mapboxMap used for route, camera, and location UI
      * @since 0.6.0
      */
-    override fun onMapReady(mapboxMap: MapboxMap) {
+    override fun onMapReady(mapboxMap: MapLibreMap) {
         val builder = Style.Builder().fromUri(
             context.getString(R.string.map_style_light)
         )
@@ -424,9 +425,9 @@ class NavigationRouteView @JvmOverloads constructor(
         }
     }
 
-    override fun addMarker(position: Point) {
+    override fun addMarker(point: Point?) {
         if (navigationMap != null) {
-            navigationMap!!.addDestinationMarker(position)
+            navigationMap!!.addDestinationMarker(point)
         }
     }
 
@@ -694,7 +695,7 @@ class NavigationRouteView @JvmOverloads constructor(
         )
     }
 
-    private fun initializeNavigationMap(mapView: MapView?, map: MapboxMap) {
+    private fun initializeNavigationMap(mapView: MapView?, map: MapLibreMap) {
         if (initialMapCameraPosition != null) {
             map.cameraPosition = initialMapCameraPosition!!
         }
@@ -793,7 +794,9 @@ class NavigationRouteView @JvmOverloads constructor(
     private fun initializeOnCameraTrackingChangedListener() {
         onTrackingChangedListener =
             NavigationOnCameraTrackingChangedListener(navigationPresenter, summaryBehavior)
-        navigationMap!!.addOnCameraTrackingChangedListener(onTrackingChangedListener)
+        onTrackingChangedListener?.let {
+            navigationMap!!.addOnCameraTrackingChangedListener(it)
+        }
     }
 
     private fun establish(options: NavigationViewOptions) {

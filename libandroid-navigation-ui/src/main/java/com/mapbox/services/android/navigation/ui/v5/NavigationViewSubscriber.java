@@ -9,8 +9,8 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.OnLifecycleEvent;
 
-import com.mapbox.geojson.Point;
 import com.mapbox.services.android.navigation.v5.models.DirectionsRoute;
+import org.maplibre.geojson.Point;
 
 class NavigationViewSubscriber implements LifecycleObserver {
 

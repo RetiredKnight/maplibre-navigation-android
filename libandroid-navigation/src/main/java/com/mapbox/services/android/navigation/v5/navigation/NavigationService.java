@@ -9,10 +9,11 @@ import android.os.IBinder;
 
 import androidx.annotation.Nullable;
 
-import com.mapbox.mapboxsdk.location.engine.LocationEngine;
 import com.mapbox.services.android.navigation.v5.location.LocationValidator;
 import com.mapbox.services.android.navigation.v5.models.DirectionsRoute;
 import com.mapbox.services.android.navigation.v5.navigation.notification.NavigationNotification;
+
+import org.maplibre.android.location.engine.LocationEngine;
 
 import java.lang.ref.WeakReference;
 

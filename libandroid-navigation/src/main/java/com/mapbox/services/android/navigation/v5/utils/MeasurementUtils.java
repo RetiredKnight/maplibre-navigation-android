@@ -1,13 +1,14 @@
 package com.mapbox.services.android.navigation.v5.utils;
 
-import com.mapbox.services.android.navigation.v5.models.LegStep;
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.LineString;
-import com.mapbox.geojson.Point;
-import com.mapbox.turf.TurfMeasurement;
-import com.mapbox.turf.TurfMisc;
+import static org.maplibre.turf.TurfConstants.UNIT_METERS;
 
-import static com.mapbox.turf.TurfConstants.UNIT_METERS;
+import com.mapbox.services.android.navigation.v5.models.LegStep;
+
+import org.maplibre.geojson.Feature;
+import org.maplibre.geojson.LineString;
+import org.maplibre.geojson.Point;
+import org.maplibre.turf.TurfMeasurement;
+import org.maplibre.turf.TurfMisc;
 
 public final class MeasurementUtils {
 

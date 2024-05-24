@@ -5,8 +5,6 @@ import android.location.Location;
 import android.os.AsyncTask;
 import androidx.annotation.NonNull;
 
-import com.mapbox.geojson.Feature;
-import com.mapbox.geojson.Point;
 import com.mapbox.services.android.navigation.v5.navigation.MapboxNavigation;
 
 import java.util.ArrayList;
@@ -15,6 +13,9 @@ import java.util.List;
 import java.util.Set;
 
 import static com.mapbox.services.android.navigation.ui.v5.map.NavigationMapboxMap.STREETS_LAYER_ID;
+
+import org.maplibre.geojson.Feature;
+import org.maplibre.geojson.Point;
 
 class MapWayName {
 

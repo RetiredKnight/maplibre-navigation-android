@@ -4,15 +4,16 @@ import android.location.Location;
 import androidx.annotation.NonNull;
 
 import com.mapbox.services.android.navigation.v5.models.LegStep;
-import com.mapbox.geojson.Point;
-import com.mapbox.mapboxsdk.camera.CameraPosition;
-import com.mapbox.mapboxsdk.geometry.LatLng;
-import com.mapbox.mapboxsdk.geometry.LatLngBounds;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.services.android.navigation.v5.navigation.NavigationConstants;
 import com.mapbox.services.android.navigation.v5.navigation.camera.RouteInformation;
 import com.mapbox.services.android.navigation.v5.navigation.camera.SimpleCamera;
 import com.mapbox.services.android.navigation.v5.routeprogress.RouteProgress;
+
+import org.maplibre.android.camera.CameraPosition;
+import org.maplibre.android.geometry.LatLng;
+import org.maplibre.android.geometry.LatLngBounds;
+import org.maplibre.android.maps.MapLibreMap;
+import org.maplibre.geojson.Point;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +25,7 @@ public class DynamicCamera extends SimpleCamera {
   private static final double MAX_CAMERA_ZOOM = 16d;
   private static final double MIN_CAMERA_ZOOM = 12d;
 
-  private MapboxMap mapboxMap;
+  private MapLibreMap mapboxMap;
   private LegStep currentStep;
   private boolean hasPassedLowAlertLevel;
   private boolean hasPassedMediumAlertLevel;
@@ -32,7 +33,7 @@ public class DynamicCamera extends SimpleCamera {
   private boolean forceUpdateZoom;
   private boolean isShutdown = false;
 
-  public DynamicCamera(@NonNull MapboxMap mapboxMap) {
+  public DynamicCamera(@NonNull MapLibreMap mapboxMap) {
     this.mapboxMap = mapboxMap;
   }
 
