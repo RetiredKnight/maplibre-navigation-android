@@ -308,83 +308,88 @@ class NavigationRouteView @JvmOverloads constructor(
     }
 
     fun calculateRoute() {
-        val startRouteButton = findViewById<Button>(R.id.routeButton)
+        if (isMapReinitialized) {
+            onNavigationReadyCallback!!.onNavigationReady(navigationViewModel!!.isRunning)
+        } else {
+            val startRouteButton = findViewById<Button>(R.id.routeButton)
 //        startRouteButton.setOnClickListener {
-        val userLocation = mapboxMap!!.locationComponent.lastKnownLocation ?: return
-        val destination = Point.fromLngLat(76.930137, 43.230361)
-        val origin = Point.fromLngLat(userLocation.longitude, userLocation.latitude)
-        val navigationRouteBuilder = NavigationRoute.builder(context).apply {
-            this.accessToken(context.getString(R.string.mapbox_access_token))
-            this.origin(origin)
-            this.destination(destination)
-            this.voiceUnits(DirectionsCriteria.PROFILE_DRIVING)
-            this.alternatives(true)
-            // If you are using this with the GraphHopper Directions API, you need to uncomment user and profile here.
-            this.user("gh")
-            this.profile("car")
-            this.baseUrl(context.getString(R.string.base_url))
-        }
-        navigationRouteBuilder.addWaypoint(
-            Point.fromLngLat(76.930137, 43.230361)
-        )
+            val userLocation = mapboxMap!!.locationComponent.lastKnownLocation ?: return
+            val destination = Point.fromLngLat(76.930137, 43.230361)
+            val origin = Point.fromLngLat(userLocation.longitude, userLocation.latitude)
+            val navigationRouteBuilder = NavigationRoute.builder(context).apply {
+                this.accessToken(context.getString(R.string.mapbox_access_token))
+                this.origin(origin)
+                this.destination(destination)
+                this.voiceUnits(DirectionsCriteria.PROFILE_DRIVING)
+                this.alternatives(true)
+                // If you are using this with the GraphHopper Directions API, you need to uncomment user and profile here.
+                this.user("gh")
+                this.profile("car")
+                this.baseUrl(context.getString(R.string.base_url))
+            }
+            navigationRouteBuilder.addWaypoint(
+                Point.fromLngLat(76.930137, 43.230361)
+            )
 
-        navigationRouteBuilder.addWaypoint(
-            Point.fromLngLat(76.928316, 43.236109)
-        )
+            navigationRouteBuilder.addWaypoint(
+                Point.fromLngLat(76.928316, 43.236109)
+            )
 
-        navigationRouteBuilder.addWaypoint(
-            Point.fromLngLat(76.920187, 43.236783)
-        )
-        navigationRouteBuilder.build().getRoute(object : Callback<DirectionsResponse> {
-            override fun onResponse(
-                call: Call<DirectionsResponse>,
-                response: Response<DirectionsResponse>,
-            ) {
-                Timber.d("Url: %s", (call.request() as Request).url.toString())
-                response.body()?.let { response ->
-                    if (response.routes().isNotEmpty()) {
-                        val maplibreResponse =
-                            com.mapbox.services.android.navigation.v5.models.DirectionsResponse.fromJson(
-                                response.toJson()
-                            );
-                        this@NavigationRouteView.route = maplibreResponse.routes().first()
-                        navigationMapRoute?.addRoutes(maplibreResponse.routes())
+            navigationRouteBuilder.addWaypoint(
+                Point.fromLngLat(76.920187, 43.236783)
+            )
+            navigationRouteBuilder.build().getRoute(object : Callback<DirectionsResponse> {
+                override fun onResponse(
+                    call: Call<DirectionsResponse>,
+                    response: Response<DirectionsResponse>,
+                ) {
+                    Timber.d("Url: %s", (call.request() as Request).url.toString())
+                    response.body()?.let { response ->
+                        if (response.routes().isNotEmpty()) {
+                            val maplibreResponse =
+                                com.mapbox.services.android.navigation.v5.models.DirectionsResponse.fromJson(
+                                    response.toJson()
+                                );
+                            this@NavigationRouteView.route = maplibreResponse.routes().first()
+                            navigationMapRoute?.addRoutes(maplibreResponse.routes())
 
-                        val options = NavigationLauncherOptions.builder()
-                            .directionsRoute(route)
+                            val options = NavigationLauncherOptions.builder()
+                                .directionsRoute(route)
 //                    .shouldSimulateRoute(simulateRoute)
-                            .initialMapCameraPosition(
-                                CameraPosition.Builder().target(
-                                    LatLng(
-                                        userLocation.latitude,
-                                        userLocation.longitude
-                                    )
-                                ).build()
-                            )
-                            .lightThemeResId(R.style.TestNavigationViewLight)
-                            .darkThemeResId(R.style.TestNavigationViewDark)
-                            .build()
-                        baseCameraPosition = mapboxMap!!.cameraPosition
-                        NavigationLauncher.startNavigation(context, options)
-                        route?.let {
-                            if (options.initialMapCameraPosition() != null) {
-                                initialize(
-                                    options.initialMapCameraPosition()!!
+                                .initialMapCameraPosition(
+                                    CameraPosition.Builder().target(
+                                        LatLng(
+                                            userLocation.latitude,
+                                            userLocation.longitude
+                                        )
+                                    ).build()
                                 )
-                            } else {
-                                initialize()
+                                .lightThemeResId(R.style.TestNavigationViewLight)
+                                .darkThemeResId(R.style.TestNavigationViewDark)
+                                .build()
+                            baseCameraPosition = mapboxMap!!.cameraPosition
+                            NavigationLauncher.startNavigation(context, options)
+                            route?.let {
+                                isMapReinitialized = true
+                                if (options.initialMapCameraPosition() != null) {
+                                    initialize(
+                                        options.initialMapCameraPosition()!!
+                                    )
+                                } else {
+                                    initialize()
+                                }
                             }
-                        }
 //                        binding.startRouteLayout.visibility = View.VISIBLE
+                        }
                     }
+
                 }
 
-            }
-
-            override fun onFailure(call: Call<DirectionsResponse>, throwable: Throwable) {
-                Timber.e(throwable, "onFailure: navigation.getRoute()")
-            }
-        })
+                override fun onFailure(call: Call<DirectionsResponse>, throwable: Throwable) {
+                    Timber.e(throwable, "onFailure: navigation.getRoute()")
+                }
+            })
+        }
     }
 
     override fun setSummaryBehaviorState(state: Int) {
@@ -532,6 +537,16 @@ class NavigationRouteView @JvmOverloads constructor(
     fun stopNavigation() {
         navigationPresenter!!.onNavigationStopped()
         navigationViewModel!!.stopNavigation()
+        baseCameraPosition?.let {
+            mapboxMap!!.cameraPosition = it
+        }
+        if (navigationMap != null) {
+            navigationMap!!.removeOnCameraTrackingChangedListener(onTrackingChangedListener)
+            navigationMap!!.removeRoute()
+        }
+        mapboxMap!!.markers.forEach {
+            mapboxMap!!.removeMarker(it)
+        }
     }
 
     /**
