@@ -224,6 +224,10 @@ class NavigationRouteView @JvmOverloads constructor(
 //        lifecycleRegistry!!.markState(Lifecycle.State.DESTROYED)
     }
 
+    fun onDestroy2() {
+        shutdown()
+    }
+
     fun onStart() {
         mapView!!.onStart()
         if (navigationMap != null) {
