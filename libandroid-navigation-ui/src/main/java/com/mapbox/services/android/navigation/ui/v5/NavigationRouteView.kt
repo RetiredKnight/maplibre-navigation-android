@@ -949,5 +949,7 @@ class NavigationRouteView @JvmOverloads constructor(
         private const val INVALID_STATE = 0
     }
 
-    override fun getLifecycle(): Lifecycle = lifecycleRegistry!!
+    override val lifecycle: Lifecycle
+        get() = lifecycleRegistry!!
+
 }
