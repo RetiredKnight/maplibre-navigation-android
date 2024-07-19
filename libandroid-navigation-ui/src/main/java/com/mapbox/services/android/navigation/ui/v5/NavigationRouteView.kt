@@ -323,7 +323,7 @@ class NavigationRouteView @JvmOverloads constructor(
             val navigationRouteBuilder = NavigationRoute.builder(context).apply {
                 this.accessToken(context.getString(R.string.mapbox_access_token))
                 this.origin(origin)
-                this.destination(destination)
+
                 this.voiceUnits(DirectionsCriteria.PROFILE_DRIVING)
                 this.alternatives(true)
                 // If you are using this with the GraphHopper Directions API, you need to uncomment user and profile here.
@@ -551,6 +551,7 @@ class NavigationRouteView @JvmOverloads constructor(
         mapboxMap!!.markers.forEach {
             mapboxMap!!.removeMarker(it)
         }
+        navigationMapRoute?.removeRoute()
     }
 
     /**
