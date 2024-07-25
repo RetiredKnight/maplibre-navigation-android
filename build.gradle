@@ -34,8 +34,6 @@ allprojects {
       mavenCentral()
   }
 
-  group = GROUP
-  version = VERSION_NAME
 }
 
 subprojects {

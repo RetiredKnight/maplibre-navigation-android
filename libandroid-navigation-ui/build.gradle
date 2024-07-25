@@ -3,6 +3,12 @@ plugins {
 }
 apply plugin: 'com.android.library'
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 android {
     compileSdkVersion androidVersions.compileSdkVersion
     buildToolsVersion androidVersions.buildToolsVersion
@@ -29,6 +35,10 @@ android {
         javadocDeps
     }
 
+    buildFeatures {
+        buildConfig true
+    }
+
     buildTypes {
         debug {
             testCoverageEnabled = true
@@ -46,6 +56,13 @@ android {
     sourceCompatibility JavaVersion.VERSION_1_8
     targetCompatibility JavaVersion.VERSION_1_8
   }
+
+    publishing {
+        singleVariant("release") {
+            withSourcesJar()
+            withJavadocJar()
+        }
+    }
 }
 
 dependencies {
@@ -93,3 +110,4 @@ apply from: 'javadoc.gradle'
 apply from: "${rootDir}/gradle/checkstyle.gradle"
 apply from: "${rootDir}/gradle/dependencies-graph.gradle"
 apply from: "${rootDir}/gradle/dependency-updates.gradle"
+apply from: "${rootDir}/gradle/mvn-push-android.gradle"
