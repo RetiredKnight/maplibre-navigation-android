@@ -105,7 +105,7 @@ class NavigationRouteView @JvmOverloads constructor(
     private var isMapInitialized = false
     private var isSubscribed = false
     private var lifecycleRegistry: LifecycleRegistry? = null
-    private var mapboxMap: MapboxMap? = null
+    public var mapboxMap: MapboxMap? = null
     private var locationComponent: LocationComponent? = null
     private var route: DirectionsRoute? = null
     private var navigationMapRoute: NavigationMapRoute? = null
