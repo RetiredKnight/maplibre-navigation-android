@@ -19,6 +19,7 @@ import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.core.utils.TextUtils
 import com.mapbox.geojson.Point
+import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
 import com.mapbox.mapboxsdk.location.LocationComponent
@@ -28,7 +29,9 @@ import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapView
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback
+import com.mapbox.mapboxsdk.maps.Projection
 import com.mapbox.mapboxsdk.maps.Style
+import com.mapbox.mapboxsdk.plugins.annotation.SymbolOptions
 import com.mapbox.services.android.navigation.ui.v5.camera.NavigationCamera
 import com.mapbox.services.android.navigation.ui.v5.instruction.ImageCreator
 import com.mapbox.services.android.navigation.ui.v5.instruction.InstructionView
@@ -547,6 +550,7 @@ class NavigationRouteView @JvmOverloads constructor(
         if (navigationMap != null) {
             navigationMap!!.removeOnCameraTrackingChangedListener(onTrackingChangedListener)
             navigationMap!!.removeRoute()
+            navigationMap!!.clearMarkers()
         }
         mapboxMap!!.markers.forEach {
             mapboxMap!!.removeMarker(it)
@@ -943,6 +947,23 @@ class NavigationRouteView @JvmOverloads constructor(
         navigationViewModel!!.onDestroy(false)
         ImageCreator.getInstance().shutdown()
         navigationMap = null
+    }
+
+    fun setMinZoomLevel(minZoomLevel: Double) {
+        mapboxMap!!.setMinZoomPreference(minZoomLevel)
+    }
+
+    fun setMaxZoomLevel(maxZoomLevel: Double) {
+        mapboxMap!!.setMaxZoomPreference(maxZoomLevel)
+    }
+
+    fun getProjection() : Projection {
+        return mapboxMap!!.projection
+    }
+
+    fun addMarker() {
+        mapboxMap!!.addMarker(MarkerOptions())
+//        navigationMap.addCustomMarker(SymbolOptions().withIconImage())
     }
 
     companion object {
