@@ -2,12 +2,15 @@ package com.mapbox.services.android.navigation.ui.v5
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.util.AttributeSet
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.ViewCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.Lifecycle
@@ -19,6 +22,7 @@ import com.mapbox.api.directions.v5.DirectionsCriteria
 import com.mapbox.api.directions.v5.models.DirectionsResponse
 import com.mapbox.core.utils.TextUtils
 import com.mapbox.geojson.Point
+import com.mapbox.mapboxsdk.annotations.Icon
 import com.mapbox.mapboxsdk.annotations.MarkerOptions
 import com.mapbox.mapboxsdk.camera.CameraPosition
 import com.mapbox.mapboxsdk.geometry.LatLng
@@ -314,7 +318,7 @@ class NavigationRouteView @JvmOverloads constructor(
         }
     }
 
-    fun calculateRoute() {
+    fun calculateRoute(routeList: List<Pair<Double, Double>>) {
         if (isMapReinitialized) {
             onNavigationReadyCallback!!.onNavigationReady(navigationViewModel!!.isRunning)
         } else {
@@ -334,17 +338,11 @@ class NavigationRouteView @JvmOverloads constructor(
                 this.profile("car")
                 this.baseUrl(context.getString(R.string.base_url))
             }
-            navigationRouteBuilder.addWaypoint(
-                Point.fromLngLat(76.930137, 43.230361)
-            )
-
-            navigationRouteBuilder.addWaypoint(
-                Point.fromLngLat(76.928316, 43.236109)
-            )
-
-            navigationRouteBuilder.addWaypoint(
-                Point.fromLngLat(76.920187, 43.236783)
-            )
+            for (point in routeList) {
+                navigationRouteBuilder.addWaypoint(
+                    Point.fromLngLat(point.first, point.second)
+                )
+            }
             navigationRouteBuilder.build().getRoute(object : Callback<DirectionsResponse> {
                 override fun onResponse(
                     call: Call<DirectionsResponse>,
@@ -961,9 +959,15 @@ class NavigationRouteView @JvmOverloads constructor(
         return mapboxMap!!.projection
     }
 
-    fun addMarker() {
+    fun addMarker(icon: Int, latitude: Double, longitude: Double, id: String) {
         mapboxMap!!.addMarker(MarkerOptions())
-//        navigationMap.addCustomMarker(SymbolOptions().withIconImage())
+        val position = LatLng(latitude, longitude)
+//        val icon = Icon(id, BitmapFactory.decodeResource(resources, icon))
+//        val markerOptions = MarkerOptions()
+//            .position(position)
+//            .icon(icon)
+//        mapboxMap!!.setOnMarkerClickListener {
+//        }
     }
 
     companion object {

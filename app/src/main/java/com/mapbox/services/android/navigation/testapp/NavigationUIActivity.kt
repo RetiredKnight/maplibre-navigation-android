@@ -77,7 +77,7 @@ class NavigationUIActivity :
 //        }
 
         binding.startRouteButton.setOnClickListener {
-            binding.navigationView.calculateRoute()
+//            binding.navigationView.calculateRoute()
         }
 //        binding.clearPoints.setOnClickListener {
 //            if (::mapboxMap.isInitialized) {
