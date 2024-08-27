@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable
 import android.location.Location
 import android.os.Bundle
 import android.util.AttributeSet
+import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -121,7 +122,8 @@ class NavigationRouteView @JvmOverloads constructor(
 
     init {
         ThemeSwitcher.setTheme(context, attrs)
-        initializeView(context as FragmentActivity)
+        initializeView()
+        println("CONTEXT ${context as FragmentActivity}")
     }
 
     /**
@@ -655,10 +657,10 @@ class NavigationRouteView @JvmOverloads constructor(
         return instructionView!!.retrieveAlertView()
     }
 
-    private fun initializeView(context: FragmentActivity) {
+    private fun initializeView() {
         inflate(context, R.layout.navigation_view_layout, this)
         bind()
-        initializeNavigationViewModel(context)
+//        initializeNavigationViewModel()
         initializeNavigationEventDispatcher()
         initializeNavigationPresenter()
         initializeInstructionListListener()
@@ -679,7 +681,7 @@ class NavigationRouteView @JvmOverloads constructor(
         routeOverviewBtn = findViewById(R.id.routeOverviewBtn)
     }
 
-    private fun initializeNavigationViewModel(context: FragmentActivity) {
+    fun initializeNavigationViewModel(context: FragmentActivity) {
         try {
             navigationViewModel = ViewModelProvider((context)).get(
                 NavigationViewModel::class.java
