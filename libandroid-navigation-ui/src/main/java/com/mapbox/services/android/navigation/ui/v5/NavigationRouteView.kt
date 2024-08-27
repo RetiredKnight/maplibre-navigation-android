@@ -121,7 +121,7 @@ class NavigationRouteView @JvmOverloads constructor(
 
     init {
         ThemeSwitcher.setTheme(context, attrs)
-        initializeView()
+        initializeView(context as FragmentActivity)
     }
 
     /**
@@ -655,10 +655,10 @@ class NavigationRouteView @JvmOverloads constructor(
         return instructionView!!.retrieveAlertView()
     }
 
-    private fun initializeView() {
+    private fun initializeView(context: FragmentActivity) {
         inflate(context, R.layout.navigation_view_layout, this)
         bind()
-        initializeNavigationViewModel()
+        initializeNavigationViewModel(context)
         initializeNavigationEventDispatcher()
         initializeNavigationPresenter()
         initializeInstructionListListener()
@@ -679,9 +679,9 @@ class NavigationRouteView @JvmOverloads constructor(
         routeOverviewBtn = findViewById(R.id.routeOverviewBtn)
     }
 
-    private fun initializeNavigationViewModel() {
+    private fun initializeNavigationViewModel(context: FragmentActivity) {
         try {
-            navigationViewModel = ViewModelProvider((context as FragmentActivity)).get(
+            navigationViewModel = ViewModelProvider((context)).get(
                 NavigationViewModel::class.java
             )
         } catch (exception: ClassCastException) {
