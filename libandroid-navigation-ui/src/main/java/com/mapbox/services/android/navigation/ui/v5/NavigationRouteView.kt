@@ -122,7 +122,7 @@ class NavigationRouteView @JvmOverloads constructor(
 
     init {
         ThemeSwitcher.setTheme(context, attrs)
-        initializeView()
+//        initializeView()
         println("CONTEXT ${context as FragmentActivity}")
     }
 
@@ -131,7 +131,9 @@ class NavigationRouteView @JvmOverloads constructor(
      *
      * @param savedInstanceState to restore state if not null
      */
-    fun onCreate(navigationCallback: OnNavigationReadyCallback, savedInstanceState: Bundle?) {
+    fun onCreate(navigationCallback: OnNavigationReadyCallback, savedInstanceState: Bundle?, context: FragmentActivity) {
+        initializeNavigationViewModel(context)
+        initializeView()
         mapView?.let {
             it.apply {
                 if (!isMapInitialized) {
