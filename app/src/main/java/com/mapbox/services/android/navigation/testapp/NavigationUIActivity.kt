@@ -65,7 +65,7 @@ class NavigationUIActivity :
 
         binding = ActivityNavigationUiBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.navigationView.onCreate(this, savedInstanceState)
+        binding.navigationView.onCreate(this, savedInstanceState, this)
 
 //        binding.mapView.apply {
 //            onCreate(savedInstanceState)
