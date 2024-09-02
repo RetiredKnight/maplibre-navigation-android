@@ -1,6 +1,7 @@
 package com.mapbox.services.android.navigation.ui.v5
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
@@ -10,6 +11,7 @@ import android.util.AttributeSet
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
+import androidx.activity.ComponentActivity
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.graphics.drawable.toBitmap
 import androidx.core.view.ViewCompat
@@ -131,7 +133,7 @@ class NavigationRouteView @JvmOverloads constructor(
      *
      * @param savedInstanceState to restore state if not null
      */
-    fun onCreate(navigationCallback: OnNavigationReadyCallback, savedInstanceState: Bundle?, context: FragmentActivity) {
+    fun onCreate(navigationCallback: OnNavigationReadyCallback, savedInstanceState: Bundle?, context: ComponentActivity) {
         initializeNavigationViewModel(context)
         initializeView()
         mapView?.let {
@@ -683,7 +685,7 @@ class NavigationRouteView @JvmOverloads constructor(
         routeOverviewBtn = findViewById(R.id.routeOverviewBtn)
     }
 
-    fun initializeNavigationViewModel(context: FragmentActivity) {
+    fun initializeNavigationViewModel(context: ComponentActivity) {
         try {
             navigationViewModel = ViewModelProvider((context)).get(
                 NavigationViewModel::class.java
