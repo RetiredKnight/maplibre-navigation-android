@@ -124,8 +124,6 @@ class NavigationRouteView @JvmOverloads constructor(
 
     init {
         ThemeSwitcher.setTheme(context, attrs)
-//        initializeView()
-        println("CONTEXT ${context as FragmentActivity}")
     }
 
     /**

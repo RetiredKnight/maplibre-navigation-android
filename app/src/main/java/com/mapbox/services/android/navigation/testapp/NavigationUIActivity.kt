@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Parcelable
 import android.preference.PreferenceManager
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.snackbar.Snackbar
 import com.mapbox.api.directions.v5.DirectionsCriteria
@@ -40,7 +41,7 @@ import retrofit2.Response
 import timber.log.Timber
 
 class NavigationUIActivity :
-    AppCompatActivity(),
+    ComponentActivity(),
     MapboxMap.OnMapClickListener, OnNavigationReadyCallback,
     NavigationListener {
 
