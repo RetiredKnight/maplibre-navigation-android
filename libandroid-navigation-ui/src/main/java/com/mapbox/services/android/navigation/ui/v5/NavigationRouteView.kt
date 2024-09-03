@@ -323,15 +323,14 @@ class NavigationRouteView @JvmOverloads constructor(
         }
     }
 
-    fun calculateRoute(routeList: List<Pair<Double, Double>>) {
+    fun calculateRoute(routeList: List<Pair<Double, Double>>, userLocation: Pair<Double, Double>) {
         if (isMapReinitialized) {
             onNavigationReadyCallback!!.onNavigationReady(navigationViewModel!!.isRunning)
         } else {
             val startRouteButton = findViewById<Button>(R.id.routeButton)
 //        startRouteButton.setOnClickListener {
-            val userLocation = mapboxMap!!.locationComponent.lastKnownLocation ?: return
             val destination = Point.fromLngLat(76.930137, 43.230361)
-            val origin = Point.fromLngLat(userLocation.longitude, userLocation.latitude)
+            val origin = Point.fromLngLat(userLocation.first, userLocation.second)
             val navigationRouteBuilder = NavigationRoute.builder(context).apply {
                 this.accessToken(context.getString(R.string.mapbox_access_token))
                 this.origin(origin)
@@ -369,8 +368,8 @@ class NavigationRouteView @JvmOverloads constructor(
                                 .initialMapCameraPosition(
                                     CameraPosition.Builder().target(
                                         LatLng(
-                                            userLocation.latitude,
-                                            userLocation.longitude
+                                            userLocation.first,
+                                            userLocation.second
                                         )
                                     ).build()
                                 )
