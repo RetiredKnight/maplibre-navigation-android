@@ -266,6 +266,10 @@ class NavigationUIActivity :
         // Intentionally empty
     }
 
+    override fun onMapReadyCallback() {
+        // Intentionally empty
+    }
+
     private fun extractRoute(options: NavigationViewOptions.Builder) {
         val route = NavigationLauncher.extractRoute(this)
         options.directionsRoute(route)

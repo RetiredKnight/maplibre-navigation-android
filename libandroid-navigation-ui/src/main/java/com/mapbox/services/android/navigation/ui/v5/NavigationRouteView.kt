@@ -298,6 +298,7 @@ class NavigationRouteView @JvmOverloads constructor(
             mapView!!,
             mapboxMap
         )
+        onNavigationReadyCallback!!.onMapReadyCallback()
     }
 
     @SuppressWarnings("MissingPermission")
