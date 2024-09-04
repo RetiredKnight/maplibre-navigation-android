@@ -323,7 +323,7 @@ class NavigationRouteView @JvmOverloads constructor(
         }
     }
 
-    fun calculateRoute(routeList: List<Pair<Double, Double>>, userLocation: Pair<Double, Double>) {
+    fun calculateRoute(routeList: List<Pair<Double, Double>>, userLocation: Pair<Double, Double>, accessToken: String) {
         if (isMapReinitialized) {
             onNavigationReadyCallback!!.onNavigationReady(navigationViewModel!!.isRunning)
         } else {
@@ -332,7 +332,7 @@ class NavigationRouteView @JvmOverloads constructor(
             val destination = Point.fromLngLat(76.930137, 43.230361)
             val origin = Point.fromLngLat(userLocation.first, userLocation.second)
             val navigationRouteBuilder = NavigationRoute.builder(context).apply {
-                this.accessToken(context.getString(R.string.mapbox_access_token))
+                this.accessToken(accessToken)
                 this.origin(origin)
 
                 this.voiceUnits(DirectionsCriteria.PROFILE_DRIVING)

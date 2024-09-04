@@ -78,7 +78,11 @@ class NavigationUIActivity :
 //        }
 
         binding.startRouteButton.setOnClickListener {
-//            binding.navigationView.calculateRoute()
+            val points = mutableListOf<Pair<Double, Double>>()
+            points.add(Pair(76.930137, 43.230361))
+            points.add(Pair(76.928316, 43.236109))
+            points.add(Pair(76.920187, 43.236783))
+//            binding.navigationView.calculateRoute(points, Pair(76.930137, 43.230361))
         }
 //        binding.clearPoints.setOnClickListener {
 //            if (::mapboxMap.isInitialized) {
