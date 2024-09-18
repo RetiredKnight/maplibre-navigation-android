@@ -685,9 +685,7 @@ class NavigationRouteView @JvmOverloads constructor(
 
     fun initializeNavigationViewModel(context: ComponentActivity) {
         try {
-            navigationViewModel = ViewModelProvider((context)).get(
-                NavigationViewModel::class.java
-            )
+            navigationViewModel = NavigationViewModel(context)
         } catch (exception: ClassCastException) {
             throw ClassCastException("Please ensure that the provided Context is a valid FragmentActivity")
         }

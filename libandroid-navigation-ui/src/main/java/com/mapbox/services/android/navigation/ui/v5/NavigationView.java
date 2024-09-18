@@ -527,7 +527,7 @@ public class NavigationView extends CoordinatorLayout implements LifecycleOwner,
 
   private void initializeNavigationViewModel() {
     try {
-      navigationViewModel = new ViewModelProvider((FragmentActivity) getContext()).get(NavigationViewModel.class);
+      navigationViewModel = new NavigationViewModel(getContext());
     } catch (ClassCastException exception) {
       throw new ClassCastException("Please ensure that the provided Context is a valid FragmentActivity");
     }
